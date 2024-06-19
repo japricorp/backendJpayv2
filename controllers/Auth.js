@@ -1,0 +1,1 @@
+const {query} = require("./utils/database")
