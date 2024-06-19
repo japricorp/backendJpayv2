@@ -1,0 +1,30 @@
+{
+  "name": "backendjpayv2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "adbkit": "^2.11.1",
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "moment-timezone": "^0.5.45",
+    "mysql2": "^3.10.1",
+    "nodemon": "^3.1.3",
+    "path": "^0.12.7",
+    "qs": "^6.12.1",
+    "socket.io": "^4.7.5"
+  }
+}
