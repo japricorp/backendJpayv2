@@ -44,3 +44,15 @@ exports.SyncData = async (req,res)=>{
 	}
 	res.json(response)
 }
+
+exports.GetUpline = async (req,res)=>{
+	const{phone} = req.body
+	const check = await query("SELECT * FROM members WHERE phone = ?",[phone])
+	if (check.length >0) {
+		const upline = await query("SELECT * FROM members WHERE reff = ? ",[check[0].upline]);
+		response = {code:200,message:"Success",data:upline[0].phone}
+	}else{
+		response = {code:203,message:"Dta tidak ditemukan",data:null}
+	}
+	res.json(response)
+}

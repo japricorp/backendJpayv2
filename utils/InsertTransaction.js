@@ -99,3 +99,21 @@ exports.PengirimanSaldoQRCode = async (receiver_name, amount, reff, phone, invoi
     throw error;
   }
 };
+
+
+exports.IsiSaldo = async (bank, amount, reff, phone, invoice) => {
+  const deskripsi = `Pengisian saldo sebesar ${formatRupiah(amount)} melalui ${bank}`;
+  const sql = `
+    INSERT INTO transaksi
+    (date, invoice, members, product, customers, sale, price, \`desc\`, type)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  const values = [dateNow,invoice,reff,'Pengisian Saldo',phone,amount,amount,deskripsi,7 ];
+  try {
+    const insert = await query(sql, values);
+    return insert;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
+  }
+};
