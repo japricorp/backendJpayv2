@@ -1,5 +1,7 @@
 const InsertDB = require('../utils/InsertTransaction')
 const Flip = require('../utils/Flip');
+const CekTagihan = require('../digiflazz/CekTagihan');
+
 
 exports.TransferSaldo = async(req,res)=>{
 	const {receiver_name, sender_name,amount, reff_receiver,phone_receiver,reff, phone, invoice} = req.body
@@ -22,6 +24,18 @@ exports.IsiSaldo = async(req,res)=>{
 	if (bank == "QRIS") {
 		const url = await Flip.sendFlip(amount, invoice)
 		res.json({code:200,message:"Silahkan lanjutkan proses",data:url})
+	}else{
+		res.json({code:200,message:"Silahkan lanjutkan proses",data:null})
 	}
 	
+}
+exports.CekPasca = async(req,res)=>{
+	const {produk,number, invoice} = req.body
+	try {
+        const hasil = await CekTagihan.check(produk, number, invoice);
+        res.json(hasil);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 }
