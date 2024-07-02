@@ -1,10 +1,10 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
+const serviceAccount = require('../serviceAccountKey.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-async function sendFCM(token,type,invoice,title,data) {
+async function sendFCM(token,type,invoice,title,body) {
   const message = {
     token: token,
     data: {
@@ -13,7 +13,7 @@ async function sendFCM(token,type,invoice,title,data) {
     },
     notification: {
       title: title,
-      body: bocy
+      body: body
     },
     android: {
       priority: "high"

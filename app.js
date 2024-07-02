@@ -10,6 +10,32 @@ app.set('view engine', 'ejs');
 const adb = require('adbkit');
 const client = adb.createClient();
 app.use('/api', routes);
+
+
+const {query} = require('./utils/database')
+const fcm = require("./utils/firebase")
+app.post("/digiflazz",async(req,res)=>{
+  const {data} = req.body
+  const trx_id = data.trx_id;
+  const ref_id = data.ref_id;
+  const customer_no = data.customer_no;
+  const buyer_sku_code = data.buyer_sku_code;
+  const message = data.message;
+  const status = data.status;
+  const rc = data.rc;
+  const buyer_last_saldo = data.buyer_last_saldo;
+  const sn = data.sn;
+  const price = data.price;
+  const tele = data.tele;
+  const wa = data.wa;
+  const transaksi = await query("SELECT * FROM transaksi WHERE invoice = ?",[ref_id])
+  const users = await query("SELECT * FROM members WHERE ref = ?",[transaksi[0].members])
+  if(rc == "00"){
+    await query("UPDATE transaksi SET status=1,sn= ? WHERE invoice = ?",[sn,ref_id])
+    fcm.sendFCM(users[0].token,1,ref_id,"Transaksi Berhasil","Transaksi "+transaksi[0].desc+" berhasil")
+  }
+})
+
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server berjalan di port ${PORT}`);
