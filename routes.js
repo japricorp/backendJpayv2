@@ -24,5 +24,6 @@ router.post('/qrcode-saldo', firewalls,  Transaksi.TransferSaldoQRCode);
 router.post('/topup', firewalls,  Transaksi.IsiSaldo);
 router.post('/cek-tagihan', firewalls,  Transaksi.CekPasca);
 router.post('/beli-pulsa', firewalls,  Transaksi.beliPulsa);
-
+router.post('/cek-transaksi', firewalls,  Transaksi.cekTransaksi);
+router.post('/cek-prabayar', firewalls,  Transaksi.cekPulsa);
 module.exports = router;

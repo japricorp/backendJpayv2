@@ -30,8 +30,13 @@ async function check(produk, number, invoice) {
         const response = await axios.request(config);
         return response.data;
     } catch (error) {
-        console.error('Error in check function:', error);
-        throw error;
+        if (error.response) {
+            return error.response.data;
+        } else if (error.request) {
+            return error.request;
+        } else {
+            return error.message;
+        }
     }
 }
 
