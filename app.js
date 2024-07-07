@@ -33,7 +33,7 @@ app.post("/digiflazz",async(req,res)=>{
   if(rc == "00"){
     await query("UPDATE transaksi SET status=1,sn= ? WHERE invoice = ?",[sn,ref_id])
     let type = transaksi[0].type+"";
-    fcm.sendFCM(users[0].token,type,ref_id,"Transaksi Berhasil","Transaksi "+transaksi[0].desc+" berhasil dengan ID Transakdi #"+type+"/"+ref_id)
+    fcm.sendFCM(users[0].token,type,ref_id,"Transaksi Berhasil","Transaksi #"+ref_id+"\n"+transaksi[0].desc+" berhasil")
   }
 })
 
