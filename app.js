@@ -32,7 +32,7 @@ app.post("/digiflazz",async(req,res)=>{
   const users = await query("SELECT * FROM members WHERE reff = ?",[transaksi[0].members])
   if(rc == "00"){
     await query("UPDATE transaksi SET status=1,sn= ? WHERE invoice = ?",[sn,ref_id])
-    fcm.sendFCM(users[0].token,"1",ref_id,"Transaksi Berhasil","Transaksi "+transaksi[0].desc+" berhasil")
+    fcm.sendFCM(users[0].token,transaksi[0].type,ref_id,"Transaksi Berhasil","Transaksi "+transaksi[0].desc+" berhasil dengan ID Transakdi #"+transaksi[0].type+"/"+ref_id)
   }
 })
 

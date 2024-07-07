@@ -14,7 +14,7 @@ async function sendFCM(token, type, invoice, title, body) {
     },
     notification: {
       title: title,
-      body: body
+      body: body,
     },
     android: {
       priority: "high"
