@@ -4,7 +4,8 @@ const serviceAccount = require('../serviceAccountKey.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
-async function sendFCM(token,type,invoice,title,body) {
+
+async function sendFCM(token, type, invoice, title, body) {
   const message = {
     token: token,
     data: {
@@ -27,7 +28,6 @@ async function sendFCM(token,type,invoice,title,body) {
     .catch(error => {
       console.log('Error sending message:', error);
     });
-
 }
 
-module.exports = {sendFCM}
+module.exports = { sendFCM };
