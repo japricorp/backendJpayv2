@@ -2,6 +2,7 @@ const InsertDB = require('../utils/InsertTransaction')
 const Flip = require('../utils/Flip');
 const CekTagihan = require('../digiflazz/CekTagihan');
 const Pulsa = require('../digiflazz/Pulsa');
+const Bayar = require('../digiflazz/BayarTagihan');
 const { messaging } = require('firebase-admin');
 const { query } = require('../utils/database');
 exports.TransferSaldo = async(req,res)=>{
@@ -83,4 +84,25 @@ exports.cekTransaksi = async(req,res)=>{
 		res.json({code:203,message:"Transaksi "+invoice+" "+status,data:hasil[0].status});
 	}
 	
+}
+
+exports.beliProduk = async(req,res)=>{
+	const {product_name,produk,reff,number, amount,invoice} = req.body
+	try {
+		const penerimaan = await InsertDB.Prabayar(product_name,produk, amount, reff, number, invoice)
+        res.json({code:200,message:"Pembelian Produk Digital Berhasil",data:null});
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+}
+
+exports.bayarTagihan = async(req,res)=>{
+	const {product_name,produk,reff,number, amount,invoice} = req.body
+	try {
+        const hasil = await Bayar.Bayar(produk, number, invoice);
+		const penerimaan = InsertDB.Pascabayar(product_name,produk, amount, reff, number, invoice)
+        res.json(hasil);
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
 }

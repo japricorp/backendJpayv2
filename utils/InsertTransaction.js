@@ -1,5 +1,5 @@
 const {query} = require("../utils/database")
-
+const fcm = require("../utils/firebase")
 const moment = require('moment-timezone')
 const jakartaTime = moment.tz("Asia/Jakarta")
 const dateTimeNow = jakartaTime.format("YYYY-MM-DD HH:mm:ss")
@@ -29,6 +29,7 @@ exports.PenerimaanSaldo = async (sender_name, amount, reff_receiver, phone_recei
     const newBalance = parseFloat(users[0].sososo) + parseFloat(amount)
     const newTrx = parseFloat(users[0].trx_7) + parseFloat(amount)
     const update = await query("UPDATE members SET sososo = ?, trx_7 = ? WHERE reff= ?",[newBalance,newTrx,reff_receiver])
+    fcm.sendFCM(users[0].token,"2",invoice,"Penerimaan Saldo","Penerimaan saldo #"+invoice+"\nPenerimaan saldo sebesar "+amount+" berhasil")
     return insert;
   } catch (error) {
     console.error("Error executing query:", error);
@@ -133,6 +134,71 @@ exports.Prabayar = async (product_name, produk,amount, reff, customer, invoice) 
     const newBalance = parseFloat(users[0].sososo) - parseFloat(amount)
     const newTrx = parseFloat(users[0].trx_1) + parseFloat(amount)
     const update = await query("UPDATE members SET sososo = ?, trx_1 = ? WHERE reff= ?",[newBalance, newTrx, reff])
+    return insert;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
+  }
+};
+
+
+exports.Prabayar = async (product_name, produk,amount, reff, customer, invoice) => {
+  const deskripsi = `Pembelian ${product_name}`;
+  const sql = `
+    INSERT INTO transaksi
+    (date, invoice, members, product, customers, sale, price, \`desc\`, type, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  const values = [dateNow,invoice,reff,produk,customer,amount,amount,deskripsi,1,0 ];
+  try {
+    const insert = await query(sql, values);
+    const users = await query("SELECT * FROM members WHERE reff = ? ",[reff])
+    const newBalance = parseFloat(users[0].sososo) - parseFloat(amount)
+    const newTrx = parseFloat(users[0].trx_1) + parseFloat(amount)
+    const update = await query("UPDATE members SET sososo = ?, trx_1 = ? WHERE reff= ?",[newBalance, newTrx, reff])
+    return insert;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
+  }
+};
+
+exports.Pascabayar = async (product_name, produk,amount, reff, customer, invoice) => {
+  const deskripsi = `Pembayaran ${product_name}`;
+  const sql = `
+    INSERT INTO transaksi
+    (date, invoice, members, product, customers, sale, price, \`desc\`, type, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  const values = [dateNow,invoice,reff,produk,customer,amount,amount,deskripsi,2,1 ];
+  try {
+    const insert = await query(sql, values);
+    const users = await query("SELECT * FROM members WHERE reff = ? ",[reff])
+    const newBalance = parseFloat(users[0].sososo) - parseFloat(amount)
+    const newTrx = parseFloat(users[0].trx_1) + parseFloat(amount)
+    const update = await query("UPDATE members SET sososo = ?, trx_1 = ? WHERE reff= ?",[newBalance, newTrx, reff])
+    return insert;
+  } catch (error) {
+    console.error("Error executing query:", error);
+    throw error;
+  }
+};
+
+
+exports.Produk = async (product_name, produk,amount, reff, customer, invoice) => {
+  const deskripsi = `Pembelian ${product_name}`;
+  const sql = `
+    INSERT INTO transaksi
+    (date, invoice, members, product, customers, sale, price, \`desc\`, type, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+  const values = [dateNow,invoice,reff,produk,customer,amount,amount,deskripsi,3,1 ];
+  try {
+    const insert = await query(sql, values);
+    const users = await query("SELECT * FROM members WHERE reff = ? ",[reff])
+    const newBalance = parseFloat(users[0].sososo) - parseFloat(amount)
+    const newTrx = parseFloat(users[0].trx_3) + parseFloat(amount)
+    const update = await query("UPDATE members SET sososo = ?, trx_3 = ?, type = 1 WHERE reff= ?",[newBalance, newTrx, reff])
     return insert;
   } catch (error) {
     console.error("Error executing query:", error);

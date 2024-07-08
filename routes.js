@@ -26,4 +26,7 @@ router.post('/cek-tagihan', firewalls,  Transaksi.CekPasca);
 router.post('/beli-pulsa', firewalls,  Transaksi.beliPulsa);
 router.post('/cek-transaksi', firewalls,  Transaksi.cekTransaksi);
 router.post('/cek-prabayar', firewalls,  Transaksi.cekPulsa);
+router.post('/beli-produk', firewalls,  Transaksi.beliProduk);
+router.post('/bayar-tagihan', firewalls,  Transaksi.bayarTagihan);
+
 module.exports = router;
