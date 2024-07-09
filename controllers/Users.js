@@ -56,3 +56,10 @@ exports.GetUpline = async (req,res)=>{
 	}
 	res.json(response)
 }
+
+exports.UpdatePassword = async (req,res)=>{
+	const{reff,password} = req.body
+	const check = await query("UPDATE members SET password = ? WHERE reff = ?",[password,reff])
+	response = {code:200,message:"Update Password berhasil",data:null}
+	res.json(response)
+}

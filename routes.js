@@ -17,6 +17,8 @@ router.post('/get-otp-block', firewalls,  Auth.GetOtpBlock);
 router.post('/get-data', firewalls,  Users.GetData);
 router.post('/sync-data', firewalls,  Users.SyncData);
 router.post('/get-upline', firewalls,  Users.GetUpline);
+router.post('/update-password', firewalls,  Users.UpdatePassword);
+
 
 //transaksi
 router.post('/transfer-saldo', firewalls,  Transaksi.TransferSaldo);
