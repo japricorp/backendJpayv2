@@ -41,11 +41,18 @@ exports.BonusPrabayar = async (reff, invoice) => {
         }
 
         for (let i = 1; i < 6; i++) {
-            let uplineField = `upline_${i}`;
+            const uplineField = (i === 1) ? 'upline' : `upline_${i}`;
+            
             if (users[0][uplineField] > 0) {
                 await IsiBonus("Voucher Prabayar", 50, users[0][uplineField], invoice);
-                const down = await query("SELECT * FROM members WHERE reff = ?", [users[0][uplineField]]);
-                fcm.sendFCM(down[0].token,"2",invoice,"Voucher Prabayar","Voucher #"+invoice+"\n anda mendapatkan voucher sebesar 50 dari transaksi "+users[0].name)
+                try {
+                    const down = await query("SELECT * FROM members WHERE reff = ?", [users[0][uplineField]]);
+                    if (down.length > 0) {
+                        fcm.sendFCM(down[0].token, "2", invoice, "Voucher Prabayar", `Voucher #${invoice}\nAnda mendapatkan voucher sebesar 50 dari transaksi ${users[0].name}`);
+                    }
+                } catch (fcmError) {
+                    console.error("Error sending FCM notification:", fcmError, { upline: users[0][uplineField], invoice });
+                }
             }
         }
     } catch (error) {
