@@ -21,8 +21,8 @@ exports.TransferSaldoQRCode = async(req,res)=>{
 
 
 exports.IsiSaldo = async(req,res)=>{
-	const {bank, amount, reff, phone, invoice} = req.body
-	const pengisian = InsertDB.IsiSaldo(bank, amount, reff, phone, invoice)
+	const {bank, amount, admin,reff, phone, invoice} = req.body
+	const pengisian = InsertDB.IsiSaldo(bank, amount, admin,reff, phone, invoice)
 	if (bank == "QRIS") {
 		const url = await Flip.sendFlip(amount, invoice)
 		res.json({code:200,message:"Silahkan lanjutkan proses",data:url})

@@ -14,6 +14,8 @@ app.use('/api', routes);
 
 const {query} = require('./utils/database')
 const fcm = require("./utils/firebase")
+const bonus = require("./utils/bonus")
+
 app.post("/digiflazz",async(req,res)=>{
   const {data} = req.body
   const trx_id = data.trx_id;
@@ -30,6 +32,7 @@ app.post("/digiflazz",async(req,res)=>{
   const wa = data.wa;
   const transaksi = await query("SELECT * FROM transaksi WHERE invoice = ?",[ref_id])
   const users = await query("SELECT * FROM members WHERE reff = ?",[transaksi[0].members])
+  await bonus.BonusPrabayar(transaksi[0].members,ref_id)
   if(rc == "00"){
     await query("UPDATE transaksi SET status=1,sn= ? WHERE invoice = ?",[sn,ref_id])
     let type = transaksi[0].type+"";

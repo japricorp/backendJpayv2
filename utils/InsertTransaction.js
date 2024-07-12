@@ -11,7 +11,7 @@ const formatRupiah = (number) => {
     currency: 'IDR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
-  }).format(number).replace(/\u00A0/, ' ').replace('Rp', 'Rp.');
+  }).format(number).replace(/\u00A0/, ' ').replace('Rp', '');
 };
 
 
@@ -102,14 +102,14 @@ exports.PengirimanSaldoQRCode = async (receiver_name, amount, reff, phone, invoi
 };
 
 
-exports.IsiSaldo = async (bank, amount, reff, phone, invoice) => {
+exports.IsiSaldo = async (bank, amount, admin,reff, phone, invoice) => {
   const deskripsi = `Pengisian saldo sebesar ${formatRupiah(amount)} melalui ${bank}`;
   const sql = `
     INSERT INTO transaksi
-    (date, invoice, members, product, customers, sale, price, \`desc\`, type)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (date, invoice, members, product, customers, sale, price, admin, \`desc\`, type)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
   `;
-  const values = [dateNow,invoice,reff,'Pengisian Saldo',phone,amount,amount,deskripsi,7 ];
+  const values = [dateNow,invoice,reff,'Pengisian Saldo',phone,amount,amount,admin,deskripsi,7 ];
   try {
     const insert = await query(sql, values);
     return insert;
