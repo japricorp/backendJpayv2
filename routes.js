@@ -30,5 +30,6 @@ router.post('/cek-transaksi', firewalls,  Transaksi.cekTransaksi);
 router.post('/cek-prabayar', firewalls,  Transaksi.cekPulsa);
 router.post('/beli-produk', firewalls,  Transaksi.beliProduk);
 router.post('/bayar-tagihan', firewalls,  Transaksi.bayarTagihan);
+router.post('/callback-flip', firewalls,  Transaksi.callbackFlip);
 
 module.exports = router;
